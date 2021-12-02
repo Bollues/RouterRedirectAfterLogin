@@ -1,10 +1,12 @@
+
 export interface IRoute {
   key: string,
   path: string,
-  title?: string,
-  page: string
+  name?: string,
+  icon?: any,
+  component: string
 }
 
-export interface RouterProps {
-  auth: boolean,
+export interface IRouteProps {
+  setUser: React.Dispatch<React.SetStateAction<string>>
 }

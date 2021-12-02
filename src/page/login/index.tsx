@@ -1,8 +1,7 @@
-import React from "react";
 import { LoginForm } from "../../component/loginForm";
 
-export const Login: React.FC = () => {
+export const Login= (props: any) => {
   return (
-    <LoginForm />
+    <LoginForm {...props}/>
   )
 }

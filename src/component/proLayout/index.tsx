@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Button, Descriptions, Result, Avatar, Space, Statistic } from 'antd';
 import { LikeOutlined, UserOutlined } from '@ant-design/icons';
 
@@ -7,42 +7,51 @@ import ProLayout, { PageContainer, SettingDrawer } from '@ant-design/pro-layout'
 import defaultProps from './_defaultProps';
 import 'antd/dist/antd.css';
 import '@ant-design/pro-layout/dist/layout.css';
+import { UserContext } from '../../App';
+import UserBehavior from '../userBehavior';
+import { useHistory } from 'react-router';
 
-const content = (
-  <Descriptions size="small" column={2}>
-    <Descriptions.Item label="普通用户">张三</Descriptions.Item>
-    <Descriptions.Item label="联系方式">
-      <a>18900000000@163.com</a>
-    </Descriptions.Item>
-    <Descriptions.Item label="创建时间">2017-01-10</Descriptions.Item>
-    <Descriptions.Item label="更新时间">2017-10-10</Descriptions.Item>
-    <Descriptions.Item label="备注">中国浙江省杭州市西湖区古翠路</Descriptions.Item>
-  </Descriptions>
-);
 
-export default () => {
+const Layout = (props: any) => {
+  const {setUser} = props
+
   const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({ fixSiderbar: true });
   const [pathname, setPathname] = useState('/welcome');
+  const userName = useContext(UserContext)
+  const history = useHistory()
+
+  const content = (
+    <Descriptions size="small" column={2}>
+      <Descriptions.Item label="普通用户">{userName}</Descriptions.Item>
+      <Descriptions.Item label="联系方式">
+        <a href="#">18900000000@163.com</a>
+      </Descriptions.Item>
+      <Descriptions.Item label="创建时间">2021-12-1</Descriptions.Item>
+      <Descriptions.Item label="更新时间">2021-12-3</Descriptions.Item>
+      <Descriptions.Item label="备注">ecust</Descriptions.Item>
+    </Descriptions>
+  );
+
+  const logout = () => {
+    localStorage.removeItem('username')
+    setUser('')
+    history.push('/login')
+  }
+
   return (
-    <div
-      id="test-pro-layout"
-      style={{
-        height: '100vh',
-      }}
-    >
+    <div id="test-pro-layout" style={{ height: '100vh' }}>
       <ProLayout
         {...defaultProps}
-        location={{
-          pathname,
-        }}
-        waterMarkProps={{
-          content: 'Pro Layout',
-        }}
+        location={{ pathname }}
+        waterMarkProps={{ content: '开发中' }}
         onMenuHeaderClick={(e) => console.log(e)}
         menuItemRender={(item, dom) => (
           <a
             onClick={() => {
-              setPathname(item.path || '/welcome');
+              if (typeof(item.path) === 'string' && item.path !== pathname) {
+                setPathname(item.path);
+                history.push(item.path)
+              }
             }}
           >
             {dom}
@@ -59,36 +68,23 @@ export default () => {
           content={content}
           tabList={[
             {
-              tab: '基本信息',
+              tab: '公益记录',
               key: 'base',
             },
-            {
-              tab: '详细信息',
-              key: 'info',
-            },
+            // {
+            //   tab: '详细信息',
+            //   key: 'info',
+            // },
           ]}
           extraContent={
             <Space size={24}>
-              <Statistic title="Feedback" value={1128} prefix={<LikeOutlined />} />
-              <Statistic title="Unmerged" value={93} suffix="/ 100" />
+              <Statistic title="公益次数" value={93} suffix="/ 100" prefix={<LikeOutlined />}/>
             </Space>
           }
-          extra={[
-            <Button key="3">操作</Button>,
-            <Button key="2">操作</Button>,
-            <Button key="1" type="primary">
-              主操作
-            </Button>,
-          ]}
+          extra={<Button key="0" onClick={logout}>退出登录</Button>}
         >
-          <div style={{height: '120vh',}}>
-            <Result
-              status="404"
-              style={{ height: '100%', background: '#fff' }}
-              title="Hello World"
-              subTitle="Sorry, you are not authorized to access this page."
-              extra={<Button type="primary">Back Home</Button>}
-            />
+          <div style={{height: '90vh',}}>
+            <UserBehavior />
           </div>
         </PageContainer>
       </ProLayout>
@@ -102,3 +98,5 @@ export default () => {
     </div>
   );
 };
+
+export default Layout

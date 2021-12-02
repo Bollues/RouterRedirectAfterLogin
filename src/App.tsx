@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { createContext, useState } from "react";
 import { Router } from './route';
 
+export const UserContext = createContext('');
+
 function App() {
-  const [auth, setAuth] = useState(false)
+  const [user, setUser] = useState('')
 
   return (
     <div className="App">
-      <Router auth={auth}/>
+      <UserContext.Provider value={user}>
+        <Router setUser={setUser}/>
+      </UserContext.Provider>
     </div>
   );
 }
