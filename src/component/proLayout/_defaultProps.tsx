@@ -3,14 +3,13 @@ import IconFont from '../../Iconfont';
 
 const routes = routesConfig['routes']
 routes.map( (item, idx) => {
-  routes[idx].icon = <IconFont type={item.icon}/>
+  routes[idx].icon = <IconFont key={item.key} type={item.icon}/>
 })
 
 export default {
-  
   route: {
     path: '/',
-    routes
+    // routes
     // routes: [
     //   {
     //     path: '/welcome',

@@ -1,11 +1,11 @@
 import { Login } from "./login";
-import { Welcome } from "./welcome";
+import { UserBehaviorPage } from "./userBehavior";
 import { UserDonateInfo } from "./userDonate";
 import { InstitutionCheck } from './institutionCheck';
 
 export default {
   Login,
-  Welcome,
+  UserBehaviorPage,
   UserDonateInfo,
   InstitutionCheck
 } as any

@@ -1,12 +1,12 @@
 import { useContext } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
-import * as routesConfig from './config';
-import { IRoute, IRouteProps } from '../model/route';
+import { IRoute } from '../model/route';
 import AllPages from '../page';
 import { UserContext } from '../App';
 
-export const Router = (props: IRouteProps) => {
-  const { setUser } = props
+export const Router = (roleRoutesConfig: any) => {
+  const { config } = roleRoutesConfig
+
   const userName = useContext(UserContext)
 
   const checkLogin = () => {
@@ -27,14 +27,8 @@ export const Router = (props: IRouteProps) => {
 
   return (
     <Switch>
-      <Route key="0" path="/login">
-        <AllPages.Login setUser={setUser}/>
-      </Route>
-      <Route key="1" path="/welcome">
-        <AllPages.Welcome setUser={setUser}/>
-      </Route>
-      { routesConfig["routes"].routes.map(r => route(r)) }
-      <Route render={() => <Redirect to="/404" />} />
+      { config.map((r: any) => route(r)) }
+      <Redirect to="/404" />
     </Switch>
   )
 } 

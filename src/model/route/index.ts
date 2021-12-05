@@ -4,9 +4,7 @@ export interface IRoute {
   path: string,
   name?: string,
   icon?: any,
-  component: string
+  component: string,
+  role?: string[]
 }
 
-export interface IRouteProps {
-  setUser: React.Dispatch<React.SetStateAction<string>>
-}

@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { Button, Descriptions, Result, Avatar, Space, Statistic } from 'antd';
+import { Button, Descriptions, Avatar, Space, Statistic } from 'antd';
 import { LikeOutlined, UserOutlined } from '@ant-design/icons';
 
 import type { ProSettings } from '@ant-design/pro-layout';
@@ -8,15 +8,17 @@ import defaultProps from './_defaultProps';
 import 'antd/dist/antd.css';
 import '@ant-design/pro-layout/dist/layout.css';
 import { UserContext } from '../../App';
-import UserBehavior from '../userBehavior';
 import { useHistory } from 'react-router';
+import { Router } from '../../route';
+import * as routesConfig from '../../route/config';
 
 
 const Layout = (props: any) => {
-  const {setUser} = props
-
+  const { setUser } = props
+  const role = ['institution']
+ 
   const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({ fixSiderbar: true });
-  const [pathname, setPathname] = useState('/welcome');
+  const [pathname, setPathname] = useState('/');
   const userName = useContext(UserContext)
   const history = useHistory()
 
@@ -32,6 +34,14 @@ const Layout = (props: any) => {
     </Descriptions>
   );
 
+  const roleRoutesConfig = routesConfig["routes"].routes.filter(item => {
+    if ('role' in item) {
+      return item['role']?.includes(role[0])
+    } else {
+      return true
+    }
+  })
+
   const logout = () => {
     localStorage.removeItem('username')
     setUser('')
@@ -42,6 +52,7 @@ const Layout = (props: any) => {
     <div id="test-pro-layout" style={{ height: '100vh' }}>
       <ProLayout
         {...defaultProps}
+        route={{ routes: roleRoutesConfig}}
         location={{ pathname }}
         waterMarkProps={{ content: '开发中' }}
         onMenuHeaderClick={(e) => console.log(e)}
@@ -83,8 +94,8 @@ const Layout = (props: any) => {
           }
           extra={<Button key="0" onClick={logout}>退出登录</Button>}
         >
-          <div style={{height: '90vh',}}>
-            <UserBehavior />
+          <div style={{height: '90vh'}}>
+            <Router config={roleRoutesConfig}/>
           </div>
         </PageContainer>
       </ProLayout>
