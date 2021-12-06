@@ -19,18 +19,18 @@ const Layout = (props: any) => {
  
   const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({ fixSiderbar: true });
   const [pathname, setPathname] = useState('/');
-  const userName = useContext(UserContext)
+  const user = useContext(UserContext)
   const history = useHistory()
 
   const content = (
     <Descriptions size="small" column={2}>
-      <Descriptions.Item label="普通用户">{userName}</Descriptions.Item>
+      <Descriptions.Item label="普通用户">{user.userName}</Descriptions.Item>
       <Descriptions.Item label="联系方式">
-        <a href="#">18900000000@163.com</a>
+        <a href="#">{user.userName}</a>
       </Descriptions.Item>
       <Descriptions.Item label="创建时间">2021-12-1</Descriptions.Item>
       <Descriptions.Item label="更新时间">2021-12-3</Descriptions.Item>
-      <Descriptions.Item label="备注">ecust</Descriptions.Item>
+      <Descriptions.Item label="备注">{user.role}</Descriptions.Item>
     </Descriptions>
   );
 
@@ -44,7 +44,7 @@ const Layout = (props: any) => {
 
   const logout = () => {
     localStorage.removeItem('username')
-    setUser('')
+    setUser({userId: 1, userName: '', role: ''})
     history.push('/login')
   }
 

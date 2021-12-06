@@ -5,15 +5,15 @@ import { useContext } from 'react';
 
 export const AuthRouter = (props: any) => {
   const { setUser } = props
-  const userName = useContext(UserContext)
+  const user = useContext(UserContext)
 
   return (
     <Switch>
-      <Route path="/login">
-        <Login setUser={setUser}/>
+      <Route path="/login" exact>
+        <Login setUser={setUser} />
       </Route>
       <Route path="/" exact render={
-        () => userName ? 
+        () => (user && user.userName) ? 
         <Redirect to="/welcome" push /> : 
         <Redirect to="/login" push />
       } />

@@ -1,4 +1,4 @@
-.login-form-background {
+.regist-form-background {
   display: flex;
   align-items:center;
   justify-content:center;
@@ -9,25 +9,24 @@
   width: 100%;
   height: 100%;
 
-  .login-form-container {
+  .regist-form-container {
     display: flex;
     flex-direction: column;
     align-items:center;
     justify-content:center;
     background-color: white;
-    width: 300px;
-    height: 21rem;
+    width: 350px;
+    height: 330px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
     
     .title{
-      margin: 10px auto;
+      margin-top: 10px;
+      margin-bottom: 5px;
     }
 
-    .login-form{
-      .login-form-button{
-        width: 100%;
-      }
+    .registForm{
+      padding-right: 20px;
     }
   }
 }

@@ -1,17 +1,30 @@
+import { useState } from 'react';
 import 'antd/dist/antd.css';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, Radio } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
 import './loginForm.scss';
 
 export const LoginForm = (props: any) => {
   const { setUser } = props
+  const {switchPage} = props
   const history = useHistory()
+  const [role, setRole] = useState('general')
+
+  const onRegist = (e: any) => {
+    e.preventDefault()
+    switchPage(1)
+  }
+
+  const onChange = (e: any) => {
+    console.log('radio checked', e.target.value);
+    setRole(e.target.value);
+  };
 
   const onFinish = (values: any) => {
     const { uername, password } = values
     console.log('Received values of form: ', values)
-    setUser(uername)
+    setUser({userId: 1, userName: uername, role})
     localStorage.setItem('username', uername)
     history.push('/welcome')
   };
@@ -60,6 +73,13 @@ export const LoginForm = (props: any) => {
           </Form.Item>
 
           <Form.Item>
+            <Radio.Group onChange={onChange} value={role}>
+              <Radio value={'general'}>个人</Radio>
+              <Radio value={'institution'}>机构</Radio>
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item style={{marginBottom: '5px'}}>
             <Form.Item name="remember" valuePropName="checked" noStyle>
               <Checkbox>记住</Checkbox>
             </Form.Item>
@@ -69,11 +89,13 @@ export const LoginForm = (props: any) => {
             </a>
           </Form.Item>
 
+          
+
           <Form.Item >
             <Button type="primary" htmlType="submit" className="login-form-button">
               登录
             </Button>
-            或者 <a href="">立即注册!</a>
+            或者 <a href="#" onClick={e => onRegist(e)}>立即注册!</a>
           </Form.Item>
         </Form>
       </div>
