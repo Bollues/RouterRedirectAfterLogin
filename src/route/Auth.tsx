@@ -14,7 +14,7 @@ export const AuthRouter = (props: any) => {
       </Route>
       <Route path="/" exact render={
         () => (user && user.userName) ? 
-        <Redirect to="/welcome" push /> : 
+        <Redirect to="/user/behavior" push /> : 
         <Redirect to="/login" push />
       } />
       

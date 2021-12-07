@@ -6,11 +6,10 @@ import { UserContext } from '../App';
 
 export const Router = (roleRoutesConfig: any) => {
   const { config } = roleRoutesConfig
-
-  const userName = useContext(UserContext)
+  const user = useContext(UserContext)
 
   const checkLogin = () => {
-    return userName || localStorage.getItem('username')
+    return user || localStorage.getItem('user')
   }
 
   const route = (r:IRoute)=>{

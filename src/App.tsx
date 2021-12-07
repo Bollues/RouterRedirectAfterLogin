@@ -10,16 +10,20 @@ export const UserContext = createContext(userInfo);
 function App() {
   const [user, setUser] = useState(userInfo)
 
-  useEffect(() => {
-    console.log('user change', user)
-  }, [user])
+  // useEffect(() => {
+  //   console.log('user change', user)
+    // const user = localStorage.getItem('user')
+    // if (user) {
+    //   setUser(JSON.parse(user))
+    // }
+  // }, [user])
 
   return (
     <div className="App">
       <UserContext.Provider value={user}>
         <AuthRouter setUser={setUser} />
         {
-          (!user || !user.userId) ? 
+          (!user || !user.userId || !user.role) ? 
           <Login setUser={setUser} /> : 
           <Layout setUser={setUser} />
         }

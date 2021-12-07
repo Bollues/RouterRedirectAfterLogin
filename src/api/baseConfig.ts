@@ -1,5 +1,5 @@
 const config = {
-  baseUrl:'http://112.124.19.105/finetest/api',
+  baseUrl:'/api',
   timeout:30000,
 }
 export default config;

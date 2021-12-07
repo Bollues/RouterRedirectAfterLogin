@@ -1,15 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
 import { Form, Input, Button, Checkbox, Radio } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
 import './loginForm.scss';
+import { postUserLogin } from '../../api/user';
 
 export const LoginForm = (props: any) => {
   const { setUser } = props
-  const {switchPage} = props
+  const { switchPage } = props
   const history = useHistory()
   const [role, setRole] = useState('general')
+
+  useEffect(() => {
+    if (localStorage.getItem('user')) {
+      const user = JSON.parse(localStorage.getItem('user')!)
+      setUser(user)
+      history.push('/user/behavior')
+    }
+  }, [])
 
   const onRegist = (e: any) => {
     e.preventDefault()
@@ -17,16 +26,23 @@ export const LoginForm = (props: any) => {
   }
 
   const onChange = (e: any) => {
-    console.log('radio checked', e.target.value);
     setRole(e.target.value);
   };
 
+
+
   const onFinish = (values: any) => {
     const { uername, password } = values
-    console.log('Received values of form: ', values)
-    setUser({userId: 1, userName: uername, role})
-    localStorage.setItem('username', uername)
-    history.push('/welcome')
+    postUserLogin(uername, password, role).then((res) => {
+      if (res.data.code === 200) {
+        const { userId, userName, userRole } = res.data.object
+        const user = { userId, userName, role: userRole }
+        setUser(user)
+        localStorage.setItem('user', JSON.stringify(user))
+        history.push('/user/behavior')
+      } else { window.alert(res.data.msg) }
+    }).catch(e => e)
+
   };
 
   return (
@@ -79,7 +95,7 @@ export const LoginForm = (props: any) => {
             </Radio.Group>
           </Form.Item>
 
-          <Form.Item style={{marginBottom: '5px'}}>
+          <Form.Item style={{ marginBottom: '5px' }}>
             <Form.Item name="remember" valuePropName="checked" noStyle>
               <Checkbox>记住</Checkbox>
             </Form.Item>
@@ -89,7 +105,7 @@ export const LoginForm = (props: any) => {
             </a>
           </Form.Item>
 
-          
+
 
           <Form.Item >
             <Button type="primary" htmlType="submit" className="login-form-button">

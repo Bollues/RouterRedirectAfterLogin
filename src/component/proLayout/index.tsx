@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Button, Descriptions, Avatar, Space, Statistic } from 'antd';
 import { LikeOutlined, UserOutlined } from '@ant-design/icons';
 
@@ -15,12 +15,18 @@ import * as routesConfig from '../../route/config';
 
 const Layout = (props: any) => {
   const { setUser } = props
-  const role = ['institution']
  
   const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({ fixSiderbar: true });
-  const [pathname, setPathname] = useState('/');
   const user = useContext(UserContext)
+  const [pathname, setPathname] = useState('/user/behavior');
   const history = useHistory()
+
+  useEffect(() => {
+    if (user && user.userId) {
+      setPathname('/user/behavior')
+      history.push(pathname)
+    }
+  }, [])
 
   const content = (
     <Descriptions size="small" column={2}>
@@ -34,17 +40,19 @@ const Layout = (props: any) => {
     </Descriptions>
   );
 
+
   const roleRoutesConfig = routesConfig["routes"].routes.filter(item => {
     if ('role' in item) {
-      return item['role']?.includes(role[0])
+      return item['role']?.includes(user.role)
     } else {
       return true
     }
   })
 
+
   const logout = () => {
-    localStorage.removeItem('username')
-    setUser({userId: 1, userName: '', role: ''})
+    localStorage.removeItem('user')
+    setUser({userId: 0, userName: '', role: ''})
     history.push('/login')
   }
 
@@ -54,7 +62,7 @@ const Layout = (props: any) => {
         {...defaultProps}
         route={{ routes: roleRoutesConfig}}
         location={{ pathname }}
-        waterMarkProps={{ content: '开发中' }}
+        waterMarkProps={{ content: '开发中...' }}
         onMenuHeaderClick={(e) => console.log(e)}
         menuItemRender={(item, dom) => (
           <a
@@ -77,19 +85,9 @@ const Layout = (props: any) => {
       >
         <PageContainer
           content={content}
-          tabList={[
-            {
-              tab: '公益记录',
-              key: 'base',
-            },
-            // {
-            //   tab: '详细信息',
-            //   key: 'info',
-            // },
-          ]}
           extraContent={
             <Space size={24}>
-              <Statistic title="公益次数" value={93} suffix="/ 100" prefix={<LikeOutlined />}/>
+              <Statistic title="公益次数" value={93} prefix={<LikeOutlined />}/>
             </Space>
           }
           extra={<Button key="0" onClick={logout}>退出登录</Button>}

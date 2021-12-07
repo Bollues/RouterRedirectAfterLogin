@@ -1,8 +1,8 @@
 import React from 'react'
 import 'antd/dist/antd.css';
-import { Form, Input, Button, Checkbox, Radio } from 'antd';
-// import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Radio } from 'antd';
 import './registForm.scss';
+import { postUserRegister } from '../../api/user';
 
 const formItemLayout = {
   labelCol: {
@@ -28,31 +28,25 @@ const tailFormItemLayout = {
   },
 };
 
-const midFormItemLayout = {
-  wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 14,
-      offset: 10,
-    },
-  },
-};
 
 export const RegistForm = (props: any) => {
   const {switchPage} = props
   const [form] = Form.useForm()
-
-  const onFinish = () => {
-    switchPage(0)
-  }
-
   const [value, setValue] = React.useState('general')
 
+  const onFinish = (values: any) => {
+    const { email, password } = values
+    postUserRegister(email, password, value).then(res => {
+      if (res.data.code === 200) {
+        switchPage(0)
+      } else {
+        window.alert(res.data.msg)
+      }
+    }).catch(e => e)
+    
+  }
+
   const onChange = (e: any) => {
-    console.log('radio checked', e.target.value);
     setValue(e.target.value);
   };
 
@@ -136,9 +130,12 @@ export const RegistForm = (props: any) => {
             </Radio.Group>
           </Form.Item>
 
-          <Form.Item {...midFormItemLayout}>
-            <Button type="primary" htmlType="submit">
+          <Form.Item>
+            <Button type="primary" htmlType="submit" >
               注册
+            </Button>
+            <Button htmlType="button" style={{float:'right'}} onClick={() => switchPage(0)}>
+              返回
             </Button>
           </Form.Item>
 

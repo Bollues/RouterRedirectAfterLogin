@@ -10,72 +10,69 @@ const instance = axios.create()
 
 
 // 查询用户公益行为（分页查询）
-const getUserBatchInfo = (pageNum: number, pageSize: string, userId: number, userName: string) => {
-  const nums = JSON.stringify({
-    pageNum,
-    pageSize,
-    userId,
-    userName
-  })
+const getUserBatchInfo = (pageNum: number, pageSize: string, userId: number) => {
   return instance({
-    url: warpUrl(`/user/batchinfo?nums=${nums}`),
+    url: warpUrl(`/user/batchinfo/${pageSize}`),
     method: 'get',
+    params: {
+      pageNum,
+      pageSize,
+      userId
+    }
   })
 }
 
 // 根据用户名id删除用户信息
 const deleteUserById = ( userId: number ) => {
-  const id = JSON.stringify({
-    userId,
-  })
   return instance({
-    url: warpUrl(`/user/del?id=${id}`),
+    url: warpUrl(`/user/del/${userId}`),
     method: 'delete',
   })
 }
 
-// 根据用户名id查询用户信息
-const getUserDetailById = ( userId: number ) => {
-  const id = JSON.stringify({
-    userId,
-  })
+// 查询用户公益行为（分页查询）
+const getUserBehaviorById = (userId: number) => {
   return instance({
-    url: warpUrl(`/user/detail?id=${id}`),
+    url: warpUrl(`/user/detail/${userId}`),
     method: 'get',
+    params: {
+      userId
+    }
   })
 }
 
 // 用户查询所有机构信息
 const getUserInsById = ( userId: number ) => {
-  const id = JSON.stringify({
-    userId,
-  })
   return instance({
-    url: warpUrl(`/user/institution?id=${id}`),
+    url: warpUrl(`/user/institution/${userId}`),
     method: 'get',
   })
 }
 
 // 登录
-const postUserLogin = ( userName: string, userPwd: string) => {
+const postUserLogin = ( userName: string, userPwd: string, role: string ) => {
   return instance({
     url: warpUrl('/user/login'),
     method: 'post',
-    data: {
+    params: {
       userName,
       userPwd,
+      userRole: role,
+      userTel: userName
     }
   })
 }
 
 // 注册
-const postUserRegister = ( userName: string, userPwd: string ) => {
+const postUserRegister = ( userName: string, userPwd: string, role: string ) => {
   return instance({
     url: warpUrl('/user/register'),
     method: 'post',
-    data: {
+    params: {
       userName,
       userPwd,
+      userRole: role,
+      userTel: userName
     }
   })
 }
@@ -85,7 +82,7 @@ const postUserUpdate = (userId: number, userName: string, userPwd: string, userT
   return instance({
     url: warpUrl('/user/update'),
     method: 'put',
-    data: {
+    params: {
       userId,
       userName,
       userPwd,
@@ -94,12 +91,12 @@ const postUserUpdate = (userId: number, userName: string, userPwd: string, userT
   })
 }
 
-export default {
+export {
   getUserBatchInfo,
   deleteUserById,
-  getUserDetailById,
   getUserInsById,
   postUserLogin,
   postUserRegister,
-  postUserUpdate
+  postUserUpdate,
+  getUserBehaviorById
 }
