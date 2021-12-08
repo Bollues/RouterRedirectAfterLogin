@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
-import 'antd/dist/antd.css';
 import { Form, Input, Button, Checkbox, Radio } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
+import 'antd/dist/antd.css';
 import './loginForm.scss';
-import { postUserLogin } from '../../api/user';
 
 export const LoginForm = (props: any) => {
   const { setUser } = props
@@ -16,7 +15,7 @@ export const LoginForm = (props: any) => {
     if (localStorage.getItem('user')) {
       const user = JSON.parse(localStorage.getItem('user')!)
       setUser(user)
-      history.push('/user/behavior')
+      history.push(`/${user.role}/page1`)
     }
   }, [])
 
@@ -29,21 +28,13 @@ export const LoginForm = (props: any) => {
     setRole(e.target.value);
   };
 
-
-
   const onFinish = (values: any) => {
-    const { uername, password } = values
-    postUserLogin(uername, password, role).then((res) => {
-      if (res.data.code === 200) {
-        const { userId, userName, userRole } = res.data.object
-        const user = { userId, userName, role: userRole }
-        setUser(user)
-        localStorage.setItem('user', JSON.stringify(user))
-        history.push('/user/behavior')
-      } else { window.alert(res.data.msg) }
-    }).catch(e => e)
-
-  };
+    const { userName, _ } = values
+    const user = { userId: 1, userName, role }
+    setUser(user)
+    history.push(`/${user.role}/page1`)
+    localStorage.setItem('user', JSON.stringify(user))
+  }
 
   return (
     <div className="login-form-background">
@@ -61,7 +52,7 @@ export const LoginForm = (props: any) => {
           onFinish={onFinish}
         >
           <Form.Item
-            name="uername"
+            name="userName"
             rules={[
               {
                 required: true,
@@ -91,7 +82,7 @@ export const LoginForm = (props: any) => {
           <Form.Item>
             <Radio.Group onChange={onChange} value={role}>
               <Radio value={'general'}>个人</Radio>
-              <Radio value={'institution'}>机构</Radio>
+              <Radio value={'admin'}>管理</Radio>
             </Radio.Group>
           </Form.Item>
 
@@ -104,8 +95,6 @@ export const LoginForm = (props: any) => {
               忘记密码
             </a>
           </Form.Item>
-
-
 
           <Form.Item >
             <Button type="primary" htmlType="submit" className="login-form-button">

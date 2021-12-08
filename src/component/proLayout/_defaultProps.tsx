@@ -9,21 +9,6 @@ routes.map( (item, idx) => {
 export default {
   route: {
     path: '/',
-    // routes
-    // routes: [
-    //   {
-    //     path: '/welcome',
-    //     name: '欢迎',
-    //     icon: routes[1].icon,
-    //     component: './Welcome',
-    //   },
-    //   {
-    //     path: '/test',
-    //     name: '管理页面',
-    //     icon: <CrownOutlined />,
-    //     component: './Welcome',
-    //   }
-    // ]
   },
   location: {
     pathname: '/',

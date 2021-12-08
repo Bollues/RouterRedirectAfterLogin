@@ -1,11 +1,11 @@
 import { Login } from "./login";
-import { UserBehaviorPage } from "./userBehavior";
-import { UserDonateInfo } from "./userDonate";
-import { InstitutionCheck } from './institutionCheck';
+import { GeneralOnePage } from "./GeneralOnePage";
+import { GeneralTwoPage } from "./GeneralTwoPage";
+import { AdminOnePage } from './AdminPageOne';
 
 export default {
   Login,
-  UserBehaviorPage,
-  UserDonateInfo,
-  InstitutionCheck
+  GeneralOnePage,
+  GeneralTwoPage,
+  AdminOnePage
 } as any

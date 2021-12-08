@@ -18,12 +18,12 @@ const Layout = (props: any) => {
  
   const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({ fixSiderbar: true });
   const user = useContext(UserContext)
-  const [pathname, setPathname] = useState('/user/behavior');
+  const [pathname, setPathname] = useState(`/${user.role}/page1`);
   const history = useHistory()
 
   useEffect(() => {
-    if (user && user.userId) {
-      setPathname('/user/behavior')
+    if (user.role) {
+      setPathname(`/${user.role}/page1`)
       history.push(pathname)
     }
   }, [])
@@ -49,7 +49,6 @@ const Layout = (props: any) => {
     }
   })
 
-
   const logout = () => {
     localStorage.removeItem('user')
     setUser({userId: 0, userName: '', role: ''})
@@ -64,6 +63,7 @@ const Layout = (props: any) => {
         location={{ pathname }}
         waterMarkProps={{ content: '开发中...' }}
         onMenuHeaderClick={(e) => console.log(e)}
+        title="Ant Design Pro"
         menuItemRender={(item, dom) => (
           <a
             onClick={() => {
@@ -87,7 +87,7 @@ const Layout = (props: any) => {
           content={content}
           extraContent={
             <Space size={24}>
-              <Statistic title="公益次数" value={93} prefix={<LikeOutlined />}/>
+              <Statistic title="收藏" value={93} prefix={<LikeOutlined />}/>
             </Space>
           }
           extra={<Button key="0" onClick={logout}>退出登录</Button>}

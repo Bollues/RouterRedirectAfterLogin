@@ -2,7 +2,6 @@
   display: flex;
   align-items:center;
   justify-content:center;
-  background-image: url(http://47.99.130.140/imgs/photo.jpg);
   position: fixed;
   left: 0;
   top: 0;
@@ -18,7 +17,7 @@
     width: 300px;
     height: 21rem;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
     
     .title{
       margin: 10px auto;

@@ -13,8 +13,8 @@ export const AuthRouter = (props: any) => {
         <Login setUser={setUser} />
       </Route>
       <Route path="/" exact render={
-        () => (user && user.userName) ? 
-        <Redirect to="/user/behavior" push /> : 
+        () => (user && user.role) ? 
+        <Redirect to={`/${user.role}/page1`} push /> : 
         <Redirect to="/login" push />
       } />
       

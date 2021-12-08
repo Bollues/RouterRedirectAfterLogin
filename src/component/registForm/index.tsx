@@ -2,7 +2,6 @@ import React from 'react'
 import 'antd/dist/antd.css';
 import { Form, Input, Button, Radio } from 'antd';
 import './registForm.scss';
-import { postUserRegister } from '../../api/user';
 
 const formItemLayout = {
   labelCol: {
@@ -35,15 +34,8 @@ export const RegistForm = (props: any) => {
   const [value, setValue] = React.useState('general')
 
   const onFinish = (values: any) => {
-    const { email, password } = values
-    postUserRegister(email, password, value).then(res => {
-      if (res.data.code === 200) {
-        switchPage(0)
-      } else {
-        window.alert(res.data.msg)
-      }
-    }).catch(e => e)
-    
+    console.log(values)
+    switchPage(0)
   }
 
   const onChange = (e: any) => {
@@ -126,7 +118,7 @@ export const RegistForm = (props: any) => {
           <Form.Item {...tailFormItemLayout}>
             <Radio.Group onChange={onChange} value={value}>
               <Radio value={'general'}>个人</Radio>
-              <Radio value={'institution'}>机构</Radio>
+              <Radio value={'admin'}>管理</Radio>
             </Radio.Group>
           </Form.Item>
 
